@@ -399,6 +399,7 @@ object fmMain: TfmMain
       Height = 25
       Caption = 'SQL => C#'
       TabOrder = 40
+      OnClick = btn36Click
     end
   end
   object xpmnfst1: TXPManifest

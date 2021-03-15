@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, XPMan, StdCtrls, Math, ExtCtrls;
+  Dialogs, XPMan, StdCtrls, Math, ExtCtrls, StrUtils;
 
 type
   TfmMain = class(TForm)
@@ -87,6 +87,7 @@ type
     procedure btn33Click(Sender: TObject);
     procedure btn34Click(Sender: TObject);
     procedure btn35Click(Sender: TObject);
+    procedure btn36Click(Sender: TObject);
   private
     function ConvertStr(s: string): string;
     procedure CopyText;
@@ -768,6 +769,57 @@ end;
 procedure TfmMain.btn35Click(Sender: TObject);
 begin
   mmoText.Text:= StringReplace(StringReplace(Copy(mmoText.Text, 2, Length(mmoText.Text) - 2), '\r\n"', '', [rfReplaceAll]), '+ "', '', [rfReplaceAll]);
+  CopyText;
+end;
+
+procedure TfmMain.btn36Click(Sender: TObject);
+var
+  s: string;
+  pos: Integer;
+  endPos: Integer;
+begin
+  s:= StringReplace(mmoText.Text, #9, ' ', [rfReplaceAll]);
+  s:= StringReplace(s, ' float ', ' double ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' timestamp ', ' List<byte> ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' date ', ' DateTime ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' datetime ', ' DateTime ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' float'#13, ' double'#13, [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' timestamp'#13, ' List<byte>'#13, [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' date'#13, ' DateTime'#13, [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' datetime'#13, ' DateTime'#13, [rfReplaceAll, rfIgnoreCase]);
+  repeat
+    pos:= PosEx(' varchar(', s);
+    if pos > 0 then
+    begin
+      endPos:= PosEx(')', s, pos);
+      s:= Copy(s, 1, pos) + 'string' + Copy(s, endPos + 1, MaxInt);
+    end;
+  until pos <= 0;
+  repeat
+    pos:= PosEx(' char(', s);
+    if pos > 0 then
+    begin
+      endPos:= PosEx(')', s, pos);
+      s:= Copy(s, 1, pos) + 'string' + Copy(s, endPos + 1, MaxInt);
+    end;
+  until pos <= 0;
+  repeat
+    pos:= PosEx(' nchar(', s);
+    if pos > 0 then
+    begin
+      endPos:= PosEx(')', s, pos);
+      s:= Copy(s, 1, pos) + 'string' + Copy(s, endPos + 1, MaxInt);
+    end;
+  until pos <= 0;
+  repeat
+    pos:= PosEx(' nvarchar(', s);
+    if pos > 0 then
+    begin
+      endPos:= PosEx(')', s, pos);
+      s:= Copy(s, 1, pos) + 'string' + Copy(s, endPos + 1, MaxInt);
+    end;
+  until pos <= 0;
+  mmoText.Text:= s;
   CopyText;
 end;
 
