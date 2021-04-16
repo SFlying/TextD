@@ -780,11 +780,11 @@ var
 begin
   s:= StringReplace(mmoText.Text, #9, ' ', [rfReplaceAll]);
   s:= StringReplace(s, ' float ', ' double ', [rfReplaceAll, rfIgnoreCase]);
-  s:= StringReplace(s, ' timestamp ', ' List<byte> ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' timestamp ', ' long ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' date ', ' DateTime ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' datetime ', ' DateTime ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' float'#13, ' double'#13, [rfReplaceAll, rfIgnoreCase]);
-  s:= StringReplace(s, ' timestamp'#13, ' List<byte>'#13, [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' timestamp'#13, ' long'#13, [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' date'#13, ' DateTime'#13, [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' datetime'#13, ' DateTime'#13, [rfReplaceAll, rfIgnoreCase]);
   repeat
@@ -819,6 +819,8 @@ begin
       s:= Copy(s, 1, pos) + 'string' + Copy(s, endPos + 1, MaxInt);
     end;
   until pos <= 0;
+  s:= StringReplace(s, ' varchar ', ' string ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' varchar'#13, ' string'#13, [rfReplaceAll, rfIgnoreCase]);
   mmoText.Text:= s;
   CopyText;
 end;
