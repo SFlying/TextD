@@ -88,6 +88,7 @@ type
     procedure btn34Click(Sender: TObject);
     procedure btn35Click(Sender: TObject);
     procedure btn36Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     function ConvertStr(s: string): string;
     procedure CopyText;
@@ -823,6 +824,14 @@ begin
   s:= StringReplace(s, ' varchar'#13, ' string'#13, [rfReplaceAll, rfIgnoreCase]);
   mmoText.Text:= s;
   CopyText;
+end;
+
+procedure TfmMain.FormCreate(Sender: TObject);
+begin
+  if ParamCount > 0 then
+    mmoText.Text:= ParamStr(1);
+  if ParamCount > 1 then
+    mmoStandby.Text:= ParamStr(2);
 end;
 
 end.
