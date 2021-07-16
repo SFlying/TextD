@@ -778,16 +778,22 @@ var
   s: string;
   pos: Integer;
   endPos: Integer;
+  i: Integer;
+  sl: TStrings;
 begin
   s:= StringReplace(mmoText.Text, #9, ' ', [rfReplaceAll]);
   s:= StringReplace(s, ' float ', ' double ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' timestamp ', ' long ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' date ', ' DateTime ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' datetime ', ' DateTime ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' bit ', ' bool ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' tinyint ', ' byte ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' float'#13, ' double'#13, [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' timestamp'#13, ' long'#13, [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' date'#13, ' DateTime'#13, [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' datetime'#13, ' DateTime'#13, [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' bit'#13, ' bool'#13, [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' tinyint'#13, ' byte'#13, [rfReplaceAll, rfIgnoreCase]);
   repeat
     pos:= PosEx(' varchar(', s);
     if pos > 0 then
@@ -821,8 +827,15 @@ begin
     end;
   until pos <= 0;
   s:= StringReplace(s, ' varchar ', ' string ', [rfReplaceAll, rfIgnoreCase]);
+  s:= StringReplace(s, ' nvarchar ', ' string ', [rfReplaceAll, rfIgnoreCase]);
   s:= StringReplace(s, ' varchar'#13, ' string'#13, [rfReplaceAll, rfIgnoreCase]);
-  mmoText.Text:= s;
+  s:= StringReplace(s, ' nvarchar'#13, ' string'#13, [rfReplaceAll, rfIgnoreCase]);
+  sl:= TStringList.Create;
+  sl.Text:= s;
+  for i:= sl.Count - 1 downto 0 do
+    sl.Insert(i, '[DBField]');
+  mmoText.Text:= sl.Text;
+  sl.Free;
   CopyText;
 end;
 
