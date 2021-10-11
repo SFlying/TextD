@@ -51,6 +51,7 @@ type
     btn34: TButton;
     btn35: TButton;
     btn36: TButton;
+    btn37: TButton;
     procedure btn1Click(Sender: TObject);
     procedure btn2Click(Sender: TObject);
     procedure btn3Click(Sender: TObject);
@@ -89,6 +90,7 @@ type
     procedure btn35Click(Sender: TObject);
     procedure btn36Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btn37Click(Sender: TObject);
   private
     function ConvertStr(s: string): string;
     procedure CopyText;
@@ -758,10 +760,10 @@ begin
     sl.Text:= mmoText.Text;
     for i:= 0 to sl.Count - 1 do
     begin
-      sl[i]:= '+"' + sl[i] + '\r\n"';
+      sl[i]:= '+ "' + sl[i] + '\r\n"';
     end;
     sl[sl.Count - 1]:= StringReplace(sl[sl.Count - 1], '\r\n', '', [rfReplaceAll]);
-    mmoText.Text:= Copy(sl.Text, 2, Length(sl.Text) - 1);
+    mmoText.Text:= Trim(Copy(sl.Text, 2, Length(sl.Text) - 1));
     sl.Free;
   end;
   CopyText;
@@ -845,6 +847,27 @@ begin
     mmoText.Text:= ParamStr(1);
   if ParamCount > 1 then
     mmoStandby.Text:= ParamStr(2);
+end;
+
+procedure TfmMain.btn37Click(Sender: TObject);
+var
+  sl: TStrings;
+  i, j: Integer;
+  s: string;
+begin
+  if mmoText.Lines.Count > 0 then
+  begin
+    sl:= TStringList.Create;
+    sl.Text:= mmoText.Text;
+    for i:= 0 to sl.Count - 1 do
+    begin
+      sl[i]:= ' "' + sl[i] + '" & vbCrLf & _';
+    end;
+    sl[sl.Count - 1]:= StringReplace(sl[sl.Count - 1], ' & vbCrLf & _', '', [rfReplaceAll]);
+    mmoText.Text:= Trim(Copy(sl.Text, 2, Length(sl.Text) - 1));
+    sl.Free;
+  end;
+  CopyText;
 end;
 
 end.
