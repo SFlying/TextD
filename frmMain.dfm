@@ -411,6 +411,15 @@ object fmMain: TfmMain
       TabOrder = 41
       OnClick = btn37Click
     end
+    object btn38: TButton
+      Left = 648
+      Top = 416
+      Width = 75
+      Height = 25
+      Caption = #20132#25442'C#'#36171#20540
+      TabOrder = 42
+      OnClick = btn38Click
+    end
   end
   object xpmnfst1: TXPManifest
     Left = 24
